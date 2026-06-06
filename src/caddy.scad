@@ -92,15 +92,22 @@ module feet() {
 }
 
 // vertical slot vents along one outer wall side: side = "back"|"left"|"right"
+// On the back wall, slots stay clear of the cable window (+8mm) so the window
+// sits in clean solid wall — no thin slivers beside it, no slot-teeth below it.
 module wall_slots(side) {
     sw = 6; gap = 14; z0 = 18; hh = outer_h - 30;
     span = (side=="back") ? W-40 : D-40;
     n = max(1, floor(span/(sw+gap)));
+    win_cx = (stor_bay[0]+stor_bay[2])/2;
+    win0 = win_cx - cable_slot_w/2 - 8;
+    win1 = win_cx + cable_slot_w/2 + 8;
     for (i=[0:n-1]) {
         p = -span/2 + span/(2*n) + i*span/n;
-        if (side=="back")
-            translate([W/2+p, D, floor_top+z0+hh/2]) cube([sw, wall*3, hh], center=true);
-        else
+        if (side=="back") {
+            x = W/2 + p;
+            if (x < win0 || x > win1)
+                translate([x, D, floor_top+z0+hh/2]) cube([sw, wall*3, hh], center=true);
+        } else
             translate([(side=="left")?0:W, D/2+p, floor_top+z0+hh/2])
                 cube([wall*3, sw, hh], center=true);
     }
