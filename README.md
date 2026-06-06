@@ -74,9 +74,10 @@ cable/port access and heat relief.
 - Hex-staggered perforated **floor** under every bay.
 - **12 mm raised feet** → an open air gap under the whole caddy so air enters
   from below and rises through the floor holes and open tops.
-- **Honeycomb-vented walls** across the outer side/back walls AND both internal
-  divider walls, so air (and cables) move freely between all three bays
-  (hexagons print clean and are the strongest/most print-friendly vent pattern).
+- **Diagonal-lattice vents** (45° diamond openings) across the outer side/back
+  walls AND both internal divider walls, so air (and cables) move freely between
+  all three bays. Every opening peaks at 45°, so the walls have **no horizontal
+  bridges at all** — the most support-free vent pattern.
 - The **base ring** is slot-vented; air enters its sides, rises through the
   body's hex floor and out the open tops.
 - **Open tops**; towers stand exposed above the shell line.
@@ -127,6 +128,9 @@ depth, vent sizing, and the base/ear/screw dimensions). `part="body"|"base"|
 
 ## Versions
 
+- **v3.2** — wall + divider vents switched from honeycomb to a **45° diagonal
+  lattice** (diamond openings). Every opening peaks at 45°, so there are no
+  horizontal bridges — the most support-free vent pattern.
 - **v3.1** — fully support-free: the body↔base joint uses **conical self-centering
   posts** (no blind sockets/overhangs); the cable window gets a center mullion so
   its rim is a short bridge; and **both internal divider walls are honeycombed**

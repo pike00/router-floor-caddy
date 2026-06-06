@@ -120,37 +120,39 @@ module feet() {
     for (x = xs, y = ys) translate([x, y, 0]) rbox(fs, fs, foot_height, 4);
 }
 
-// 2D honeycomb field: hexagonal holes (circumradius rh) on a hex grid of cell
-// circumradius Rc, filling a uw x vh area centered on the origin.
-module honey2d(uw, vh, Rc, rh) {
-    hp = sqrt(3)*Rc; vp = 1.5*Rc;
-    nu = ceil(uw/(2*hp)) + 1; nv = ceil(vh/(2*vp)) + 1;
+// 2D diagonal-lattice field: 45-degree diamond holes (diagonal d) on a square
+// grid of pitch d+strut, filling a uw x vh area centered on the origin. Every
+// opening peaks at 45deg, so the pattern prints with no bridges and no support.
+lat_d = 22;                         // diamond opening (diagonal, mm)
+lat_strut = 6;                      // rib gap between diamonds
+module lattice2d(uw, vh, d, strut) {
+    p = d + strut; s = d/sqrt(2);
+    nu = ceil(uw/(2*p)) + 1; nv = ceil(vh/(2*p)) + 1;
     for (j = [-nv:nv], i = [-nu:nu]) {
-        x = i*hp + ((((j%2)+2)%2) == 1 ? hp/2 : 0);
-        y = j*vp;
-        if (abs(x) <= uw/2 - rh && abs(y) <= vh/2 - rh)
-            translate([x, y]) rotate(30) circle(r=rh, $fn=6);
+        x = i*p; y = j*p;
+        if (abs(x) <= uw/2 - d/2 && abs(y) <= vh/2 - d/2)
+            translate([x, y]) rotate(45) square(s, center=true);
     }
 }
 
-// honeycomb vents over one outer wall side: side = "back"|"left"|"right".
-// The 2D field is mapped onto each wall (its vertical axis -> Z). On the back
-// wall the field skips the cable-window footprint so the window keeps a border.
-module wall_honey(side) {
-    Rc = 13; rh = 10; t = wall*3;                       // cell + hole circumradius
+// diagonal-lattice vents over one outer wall side: side = "back"|"left"|"right".
+// The 2D field is mapped onto each wall (vertical axis -> Z). On the back wall
+// the field skips the cable-window footprint so the window keeps a clean border.
+module wall_lattice(side) {
+    t = wall*3;
     z0 = floor_top + 8; z1 = top - 8; V = z1 - z0; zc = (z0 + z1)/2;
     if (side == "back") {
         wkc_z = top - (cable_slot_h + back_rim)/2;      // cable-window center (Z)
         translate([W/2, D, zc]) rotate([90,0,0]) linear_extrude(t, center=true)
             difference() {
-                honey2d(W - 26, V, Rc, rh);
+                lattice2d(W - 26, V, lat_d, lat_strut);
                 translate([cable_slot_cx - W/2, wkc_z - zc])
-                    square([cable_slot_w + 2*rh + 8,
-                            (cable_slot_h - back_rim) + 2*rh + 8], center=true);
+                    square([cable_slot_w + lat_d + 8,
+                            (cable_slot_h - back_rim) + lat_d + 8], center=true);
             }
     } else {
         translate([(side=="left") ? 0 : W, D/2, zc]) rotate([0,90,0])
-            linear_extrude(t, center=true) honey2d(V, D - 26, Rc, rh);
+            linear_extrude(t, center=true) lattice2d(V, D - 26, lat_d, lat_strut);
     }
 }
 
@@ -187,18 +189,18 @@ module caddy() {
                        top - cable_slot_h])
                 cube([mw, wall*3, cable_slot_h - back_rim]);
         }
-        // ventilate the internal divider walls with honeycomb (full area); the
-        // bottom cells also let cables pass between bays into the storage bay.
+        // ventilate the internal divider walls with the same diagonal lattice
+        // (full area); the bottom cells also let cables pass between bays.
         // +X divider (Orbi | XB8/storage), full depth:
         translate([orbi_bay[2] + wall/2, D/2, (floor_top + 6 + top - 8)/2])
             rotate([0,90,0]) linear_extrude(wall*3, center=true)
-                honey2d(top - 8 - (floor_top + 6), D - 2*wall - 10, 13, 10);
+                lattice2d(top - 8 - (floor_top + 6), D - 2*wall - 10, lat_d, lat_strut);
         // +Y divider (XB8 | storage):
         translate([(colB_x0 + W - wall)/2, xb8_bay[3] + wall/2, (floor_top + 6 + top - 8)/2])
             rotate([90,0,0]) linear_extrude(wall*3, center=true)
-                honey2d((W - wall) - colB_x0 - 10, top - 8 - (floor_top + 6), 13, 10);
-        // honeycomb vents in back / left / right walls
-        wall_honey("back"); wall_honey("left"); wall_honey("right");
+                lattice2d((W - wall) - colB_x0 - 10, top - 8 - (floor_top + 6), lat_d, lat_strut);
+        // diagonal-lattice vents in back / left / right walls
+        wall_lattice("back"); wall_lattice("left"); wall_lattice("right");
     }
 }
 
