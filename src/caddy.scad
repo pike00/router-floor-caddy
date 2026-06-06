@@ -33,6 +33,9 @@ storage_d = 70;                 // storage bay depth
 cable_slot_w = 60;              // back-wall cable-entry window width
 cable_slot_h = 55;              // ... window height
 back_rim     = 12;              // solid wall left above the window (rim bar tying the flaps)
+cable_slot_cx = 134;            // window center X — tuned to sit between back vent slots
+                                // (slot pitch 20mm; 134 leaves ~8mm wall to the flanking
+                                // slots so there's no thin sliver, while keeping all slots)
 cable_pass_h = 42;              // height of internal divider cable pass-throughs
 // Both routers' port faces point INTO the central storage bay:
 //   - Orbi port (broad) face -> +X divider, cable drops into the storage bay
@@ -92,22 +95,15 @@ module feet() {
 }
 
 // vertical slot vents along one outer wall side: side = "back"|"left"|"right"
-// On the back wall, slots stay clear of the cable window (+8mm) so the window
-// sits in clean solid wall — no thin slivers beside it, no slot-teeth below it.
 module wall_slots(side) {
     sw = 6; gap = 14; z0 = 18; hh = outer_h - 30;
     span = (side=="back") ? W-40 : D-40;
     n = max(1, floor(span/(sw+gap)));
-    win_cx = (stor_bay[0]+stor_bay[2])/2;
-    win0 = win_cx - cable_slot_w/2 - 8;
-    win1 = win_cx + cable_slot_w/2 + 8;
     for (i=[0:n-1]) {
         p = -span/2 + span/(2*n) + i*span/n;
-        if (side=="back") {
-            x = W/2 + p;
-            if (x < win0 || x > win1)
-                translate([x, D, floor_top+z0+hh/2]) cube([sw, wall*3, hh], center=true);
-        } else
+        if (side=="back")
+            translate([W/2+p, D, floor_top+z0+hh/2]) cube([sw, wall*3, hh], center=true);
+        else
             translate([(side=="left")?0:W, D/2+p, floor_top+z0+hh/2])
                 cube([wall*3, sw, hh], center=true);
     }
@@ -131,7 +127,7 @@ module caddy() {
         // cable-entry window in the back wall behind the storage bay.
         // Closed at the top: a `back_rim` band of wall stays, tying the two
         // flanking wall sections together instead of leaving free-top flaps.
-        translate([(stor_bay[0]+stor_bay[2])/2 - cable_slot_w/2, D-wall*1.5,
+        translate([cable_slot_cx - cable_slot_w/2, D-wall*1.5,
                    top - cable_slot_h])
             cube([cable_slot_w, wall*3, cable_slot_h - back_rim]);
         // low cable pass-through: Orbi bay -> storage bay (through the +X divider)
