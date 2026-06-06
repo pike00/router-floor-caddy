@@ -21,11 +21,13 @@ behind the shorter XB8:
 ```
  plan view (one shell, ~206 x 200 mm):
  +-----------+------------------+
- |           |   XB8 bay        |  front wall lowered (port/cable access)
- |  Orbi bay |   117 x 117      |
- | (rotated) +------------------+
- |  72 x 190 | storage + cable  |  back wall: cable-entry notch
+ |           |   XB8 bay        |  front wall lowered (drop-in access)
+ |  Orbi bay | ports v 117x117  |
+ | (rotated) +---[pass]---------+   <- XB8 cables drop into storage
+ | ports >   | storage + cable  |  back wall: cable-entry notch
+ |  72 x 190 |   ^ Orbi cables  |
  +-----------+------------------+
+   ports > = Orbi back face points at divider; cable passes into storage
 ```
 
 ## The two devices (measured / datasheet)
@@ -57,10 +59,24 @@ cable/port access and heat relief.
 - Vertical **slot vents** in the side and back walls.
 - **Open tops**; towers stand exposed above the shell line.
 
-## Cable input + storage
+## Cable input + storage + router orientation
 
-The rear-right bay has a **U-notch in the back wall** for incoming coax/ethernet
-(the "cabinet input") and holds power bricks, splitters, and cable slack.
+The central rear bay is the **cabling hub**. It has a **U-notch in the back wall**
+for incoming coax/ethernet (the "cabinet input") and holds power bricks,
+splitters, and cable slack.
+
+**Both routers face their port (back) sides into this bay:**
+
+- The **Orbi** is rotated so its port/broad face points at the **+X divider**;
+  a low cable pass-through in that divider drops its cables into the storage bay.
+- The **XB8** faces its ports at the **+Y divider** into the same bay through a
+  matching low pass-through.
+
+So every cable runs into the central bay and out the rear notch — nothing is
+boxed against an outer wall. Directionality note: rotating the Orbi about its
+vertical axis does **not** affect cooling (convection is bottom-to-top) or WiFi,
+but it does move its port/vented broad face — hence the deliberate
+divider-facing layout and the extra vents cut into the divider beside it.
 
 ## Printing
 
@@ -86,6 +102,9 @@ storage depth, vent + cable-notch sizing). Change one and re-run `just build`.
 
 ## Versions
 
+- **v2.1** — cabling fix: both routers' port faces aimed into the central
+  storage bay via low divider pass-throughs; extra vents in the divider beside
+  the Orbi's broad face. Same footprint, still one print.
 - **v2** — single-piece unified box: one shell, three internal bays (Orbi
   rotated 90°, XB8, storage + cable notch), fits a 256 mm bed in one print.
 - **v1** — three separate dovetail-together tiles (superseded; the assembled
