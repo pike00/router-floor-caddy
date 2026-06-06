@@ -9,22 +9,17 @@ src      := "src/caddy.scad"
 default:
     @just --list
 
-# Export each printable tile as its own STL.
+# Export the single-piece caddy STL.
 build:
-    {{openscad}} -D 'part="xb8"'  -o export/xb8-cradle.stl  {{src}}
-    {{openscad}} -D 'part="orbi"' -o export/orbi-cradle.stl {{src}}
-    {{openscad}} -D 'part="tray"' -o export/storage-tray.stl {{src}}
+    {{openscad}} -o export/caddy.stl {{src}}
 
 build-all: build
 
 # Re-render the committed preview PNGs (STL export needs no GL; PNGs do).
 view := "--imgsize=1600,1200 --colorscheme=Tomorrow --projection=perspective --viewall"
 preview:
-    {{render}} -o images/assembly-hero.png {{view}} --camera=0,-520,360,0,0,0 {{src}}
-    {{render}} -o images/assembly-top.png  {{view}} --camera=0,0,700,0,0,0     {{src}}
-    {{render}} -o images/xb8-cradle.png  {{view}} --render -D 'part="xb8"'  {{src}}
-    {{render}} -o images/orbi-cradle.png {{view}} --render -D 'part="orbi"' {{src}}
-    {{render}} -o images/storage-tray.png {{view}} --render -D 'part="tray"' {{src}}
+    {{render}} -o images/caddy-hero.png {{view}} --camera=0,-420,320,0,0,0 {{src}}
+    {{render}} -o images/caddy-top.png  {{view}} --camera=0,0,600,0,0,0     {{src}} --render
 
 # Remove generated meshes (PNGs are committed).
 clean:

@@ -1,19 +1,31 @@
 # Router Floor Caddy — Xfinity XB8 + Netgear Orbi RBR850
 
-A well-ventilated, floor-standing caddy that holds two hot-running networking
-towers upright, with a bin for incoming-cable entry ("cabinet input") and
-storage of power bricks / cable slack. Open-stand design for maximum airflow.
+A well-ventilated, floor-standing **single-piece** box that holds two
+hot-running networking towers upright, with a bay for incoming-cable entry
+("cabinet input") and storage (power bricks, cable slack). Open-top design for
+maximum airflow.
 
-![assembly](images/assembly-hero.png)
+![caddy](images/caddy-hero.png)
 
-It is a **modular set of three tiles** that **dovetail together** — no hardware.
-A single tray holding both towers side-by-side plus storage would be ~590 mm
-wide, far past a 256 mm print bed, so each tile prints on its own and slides
-together on the floor:
+## One box, one print
+
+It is **one part** — a single shell with three internal bays — and prints whole
+on a 256 mm bed (footprint **206 × 200 mm**, 155 mm tall).
+
+The trick that makes one piece possible: the two routers side-by-side would span
+117 + 190 = 307 mm (over the bed), so the **Orbi is rotated 90°** — its thin
+72 mm edge faces sideways instead of its 190 mm face. Both towers plus a storage
+bay then pack into 206 × 200 mm. The storage/cable bay tucks into the depth gap
+behind the shorter XB8:
 
 ```
-[ Orbi cradle ] == [ XB8 cradle ] == [ cable-input + storage tray ]
-   blue               red                green
+ plan view (one shell, ~206 x 200 mm):
+ +-----------+------------------+
+ |           |   XB8 bay        |  front wall lowered (port/cable access)
+ |  Orbi bay |   117 x 117      |
+ | (rotated) +------------------+
+ |  72 x 190 | storage + cable  |  back wall: cable-entry notch
+ +-----------+------------------+
 ```
 
 ## The two devices (measured / datasheet)
@@ -25,74 +37,56 @@ together on the floor:
 
 Sources: the [HIDEit XB8 mount](https://hideitmounts.com/products/hideit-xb8-xfinity-xb8-gateway-modem-mount)
 cradle is 120 mm square (confirming the ~117 mm XB8 base); Orbi dimensions are
-from the Netgear RBK850 datasheet (11.02 × 7.50 × 2.81 in). Both are modeled as
-rectangular pockets sized to the device footprint + 2 mm clearance per side; the
+from the Netgear RBK850 datasheet (11.02 × 7.50 × 2.81 in). Each bay is a
+rectangular pocket sized to the device footprint + 2 mm clearance per side; the
 Orbi's curved leaf sits loosely in its rectangular pocket (add a strip of foam if
-you want a snug grip).
-
-No floor-caddy STL for these exists online — every hit is a *wall* mount, e.g.
-[XB8 wall mount](https://www.printables.com/model/414508-xfinity-gateway-xb8-wall-mount),
-[Orbi RBR850 mount](https://www.printables.com/model/48893-orbi-mount-for-rbr850-router-and-satellite) —
+you want a snug grip). No floor-caddy STL for these exists online — every hit is
+a *wall* mount (e.g. [XB8](https://www.printables.com/model/414508-xfinity-gateway-xb8-wall-mount),
+[Orbi](https://www.printables.com/model/48893-orbi-mount-for-rbr850-router-and-satellite)) —
 so this is modeled from dimensions, not remixed.
 
-## Tiles
-
-| Part | STL | Plate footprint | Wall height | Notes |
-|---|---|---|---|---|
-| Orbi cradle | `export/orbi-cradle.stl` | 228 × 150 mm (+10 tongue) | 140 mm | wide-shallow pocket; tongue on right |
-| XB8 cradle | `export/xb8-cradle.stl` | 155 × 143 mm (+10 tongue) | 110 mm | square pocket; groove left, tongue right |
-| Storage tray | `export/storage-tray.stl` | 228 × 172 mm | 90 mm | bin; back cable-notch + divider; groove left |
-
-Each cradle grips only the lower ~50 % of its tower; the towers protrude above
-the open top, fully exposed for cooling. The **front wall is lowered to 35 mm**
-on the cradles for cable/port access and to relieve heat.
+Each bay grips only the lower ~half of its tower; the towers protrude above the
+open tops, fully exposed for cooling. The **front wall is lowered to 35 mm** for
+cable/port access and heat relief.
 
 ## Ventilation
 
-- Hex-staggered perforated **floor** on every tile.
-- **12 mm raised feet** → an open air gap under the whole caddy so air can enter
-  from below and rise through the floor holes.
-- Vertical **slot vents** in the cradle front/back walls.
-- **Open tops**; towers stand exposed above the cradle line.
+- Hex-staggered perforated **floor** under every bay.
+- **12 mm raised feet** → an open air gap under the whole caddy so air enters
+  from below and rises through the floor holes and open tops.
+- Vertical **slot vents** in the side and back walls.
+- **Open tops**; towers stand exposed above the shell line.
 
 ## Cable input + storage
 
-The green tray has a **U-notch in the back wall** (incoming coax/ethernet from
-the wall — the "cabinet input") and a fixed divider that fences a rear cable
-channel off from the main bay (power bricks, splitters, cable slack).
+The rear-right bay has a **U-notch in the back wall** for incoming coax/ethernet
+(the "cabinet input") and holds power bricks, splitters, and cable slack.
 
 ## Printing
 
 - **Material: PETG** recommended — it sits on a floor next to two warm devices;
   PETG tolerates heat far better than PLA. PLA works if the room stays cool.
 - 0.2 mm layers, 15–20 % infill, 3 walls.
-- **No supports needed** — all overhangs are vertical walls; floor holes (8 mm)
-  and the cable notch bridge fine; dovetails print flat.
-- Print orientation as exported (plate flat on the bed, feet down).
-- Each tile fits a 256 mm bed (largest: Orbi cradle, 238 mm in X).
-
-## Assembly
-
-Stand the three tiles on the floor in the order Orbi · XB8 · Tray. Align an
-edge tongue with its neighbor's groove and **slide the tiles together along the
-front-to-back (Y) axis** until the dovetails seat. If a joint is loose/tight,
-adjust `dt_clear` in `src/caddy.scad` and re-export. (M3 bolt holes can be added
-later for a permanent lock — see "Out of scope" in the source header.)
+- **No supports needed** — all overhangs are vertical walls; the 8 mm floor holes
+  and the cable notch bridge fine.
+- Print as exported: floor flat on the bed, feet down, open top up.
+- Single print, ~206 × 200 mm footprint — fits a 256 mm bed.
 
 ## Build
 
 ```sh
-just build      # export the three tile STLs to export/
+just build      # export export/caddy.stl
 just preview    # re-render the PNGs in images/  (uses xvfb-run)
 just clean      # remove generated STLs
 ```
 
 `src/caddy.scad` is the parametric source of truth — every dimension above is a
-named parameter at the top. Change a device gap, wall height, or vent spacing
-there and re-run `just build`. Select a part with `-D 'part="xb8"|"orbi"|"tray"'`
-(default `"assembly"` is a preview-only view of all three abutted).
+named parameter at the top (device footprints, clearance, wall/shell height,
+storage depth, vent + cable-notch sizing). Change one and re-run `just build`.
 
 ## Versions
 
-- **v1** — first printable design: 3-tile dovetail caddy, vented cradles for
-  XB8 + Orbi RBR850, cable-input/storage tray.
+- **v2** — single-piece unified box: one shell, three internal bays (Orbi
+  rotated 90°, XB8, storage + cable notch), fits a 256 mm bed in one print.
+- **v1** — three separate dovetail-together tiles (superseded; the assembled
+  footprint was the same but it was three prints, not one).
