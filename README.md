@@ -1,16 +1,30 @@
 # Router Floor Caddy — Xfinity XB8 + Netgear Orbi RBR850
 
-A well-ventilated, floor-standing **single-piece** box that holds two
-hot-running networking towers upright, with a bay for incoming-cable entry
-("cabinet input") and storage (power bricks, cable slack). Open-top design for
-maximum airflow.
+A well-ventilated, floor-standing caddy that holds two hot-running networking
+towers upright, with a bay for incoming-cable entry ("cabinet input") and
+storage (power bricks, cable slack). Honeycomb-vented walls, open tops.
 
 ![caddy](images/caddy-hero.png)
 
-## One box, one print
+## Two parts: body + floor-mount base
 
-It is **one part** — a single shell with three internal bays — and prints whole
-on a 256 mm bed (footprint **206 × 200 mm**, 155 mm tall).
+Prints as **two parts** (both fit a 256 mm bed):
+
+- **`caddy-body.stl`** — the caddy shell with three internal bays (the box).
+- **`caddy-base.stl`** — a low vented ring that screws to the floor; the body
+  drops onto it and screws down separately, so the body is removable while the
+  base stays floor-mounted.
+
+**Installation:** screw the base to the floor through the 4 corner ears
+(countersunk #8 holes). Set the body on the base — its 4 corner ears drop over
+the base's **alignment posts**. Drive an M3 screw down through each body ear
+into the post (self-tapping pilot). To remove the body later, back out the 4 M3
+screws; the base stays put. ![base](images/caddy-base.png)
+
+## The box
+
+The body is a single shell with three internal bays, footprint **206 × 200 mm**
+(246 mm across the mount ears), ~143 mm tall.
 
 The trick that makes one piece possible: the two routers side-by-side would span
 117 + 190 = 307 mm (over the bed), so the **Orbi is rotated 90°** — its thin
@@ -56,8 +70,10 @@ cable/port access and heat relief.
 - Hex-staggered perforated **floor** under every bay.
 - **12 mm raised feet** → an open air gap under the whole caddy so air enters
   from below and rises through the floor holes and open tops.
-- **Diagonal lattice/trellis vents** across the side, back, and divider walls
-  (thin 45° ribs, self-supporting so they print without bridging).
+- **Honeycomb-vented walls** across the side, back, and divider walls (hexagons
+  print clean and are the strongest/most print-friendly vent pattern).
+- The **base ring** is slot-vented; air enters its sides, rises through the
+  body's hex floor and out the open tops.
 - **Open tops**; towers stand exposed above the shell line.
 
 ## Cable input + storage + router orientation
@@ -84,26 +100,32 @@ divider-facing layout and the extra vents cut into the divider beside it.
 - **Material: PETG** recommended — it sits on a floor next to two warm devices;
   PETG tolerates heat far better than PLA. PLA works if the room stays cool.
 - 0.2 mm layers, 15–20 % infill, 3 walls.
-- **No supports needed** — all overhangs are vertical walls; the 8 mm floor holes
-  and the cable notch bridge fine.
-- Print as exported: floor flat on the bed, feet down, open top up.
-- Single print, ~206 × 200 mm footprint — fits a 256 mm bed.
+- **No supports needed** — walls are vertical; hexagons, hex floor holes, and the
+  cable window all bridge fine; the base slots are tiny bridges.
+- Print as exported: each part floor-down, open side up.
+- Two prints (body + base), each ~246 × 200 mm — fit a 256 mm bed.
+- **Hardware:** 4 × #8 wood/floor screws (base → floor) + 4 × M3 × ~12 mm
+  self-tapping screws (body → base posts).
 
 ## Build
 
 ```sh
-just build      # export export/caddy.stl
+just build      # export caddy-body.stl + caddy-base.stl
 just preview    # re-render the PNGs in images/  (uses xvfb-run)
 just clean      # remove generated STLs
 ```
 
-`src/caddy.scad` is the parametric source of truth — every dimension above is a
-named parameter at the top (device footprints, clearance, wall/shell height,
-storage depth, vent + cable-notch sizing). Change one and re-run `just build`.
+`src/caddy.scad` is the parametric source of truth — every dimension is a named
+parameter at the top (device footprints, clearance, wall/shell height, storage
+depth, vent sizing, and the base/ear/screw dimensions). `part="body"|"base"|
+"assembly"` selects what to emit; change a parameter and re-run `just build`.
 
 ## Versions
 
-- **v2.7** — wall vents tuned to a **diagonal lattice/trellis** (thin 45° ribs,
+- **v3** — split into **body + floor-mount base** (base screws to floor; body
+  aligns on posts and screws down separately) and switched wall vents to a
+  **honeycomb** lattice (angular, strong, print-friendly).
+- **v2.7** — wall vents tuned to a diagonal lattice/trellis (thin 45° ribs,
   larger openings, fuller wall coverage). ![back](images/caddy-back.png)
 - **v2.6** — wall vents restyled from vertical slots to a diamond pattern
   (outer walls + dividers); floor stays hex, cable window keeps its clean border.
