@@ -94,18 +94,37 @@ module feet() {
     for (x = xs, y = ys) translate([x, y, 0]) rbox(fs, fs, foot_height, 4);
 }
 
-// vertical slot vents along one outer wall side: side = "back"|"left"|"right"
-module wall_slots(side) {
-    sw = 6; gap = 14; z0 = 18; hh = outer_h - 30;
-    span = (side=="back") ? W-40 : D-40;
-    n = max(1, floor(span/(sw+gap)));
-    for (i=[0:n-1]) {
-        p = -span/2 + span/(2*n) + i*span/n;
-        if (side=="back")
-            translate([W/2+p, D, floor_top+z0+hh/2]) cube([sw, wall*3, hh], center=true);
-        else
-            translate([(side=="left")?0:W, D/2+p, floor_top+z0+hh/2])
-                cube([wall*3, sw, hh], center=true);
+// one diamond-shaped hole cutter through a wall whose normal is +Y (back wall)
+module dia_Y(xc, zc, s, t)
+    translate([xc, D, zc]) rotate([90,0,0]) linear_extrude(t, center=true)
+        rotate(45) square(s, center=true);
+// ... whose normal is +X (left/right walls)
+module dia_X(xc, yc, zc, s, t)
+    translate([xc, yc, zc]) rotate([0,90,0]) linear_extrude(t, center=true)
+        rotate(45) square(s, center=true);
+
+// diamond-lattice vents over one outer wall side: side = "back"|"left"|"right"
+// (diamonds self-support at 45deg, so no bridging worries). On the back wall the
+// lattice skips the cable-window footprint so the window keeps a clean border.
+module wall_diamonds(side) {
+    d = 16; strut = 6; p = d + strut; t = wall*3; s = d/sqrt(2);
+    z0 = floor_top + 12; z1 = top - 12; vh = z1 - z0; zc = (z0 + z1) / 2;
+    // back-wall cable-window keepout (expanded by half a diamond + 4mm)
+    wx0 = cable_slot_cx - cable_slot_w/2 - d/2 - 4;
+    wx1 = cable_slot_cx + cable_slot_w/2 + d/2 + 4;
+    wz0 = (top - cable_slot_h) - d/2 - 4;
+    wz1 = (top - back_rim)     + d/2 + 4;
+    uw = (side == "back") ? W - 40 : D - 40;
+    nu = floor(uw/(2*p)); nv = floor(vh/(2*p));
+    for (i = [-nu:nu], j = [-nv:nv]) {
+        u = i*p; v = j*p;
+        if (abs(u) <= uw/2 - d/2 && abs(v) <= vh/2 - d/2) {
+            if (side == "back") {
+                x = W/2 + u; zz = zc + v;
+                if (!(x > wx0 && x < wx1 && zz > wz0 && zz < wz1)) dia_Y(x, zz, s, t);
+            } else
+                dia_X((side=="left") ? 0 : W, D/2 + u, zc + v, s, t);
+        }
     }
 }
 
@@ -136,11 +155,11 @@ module caddy() {
         // low cable pass-through: XB8 bay -> storage bay (through the +Y divider)
         translate([colB_x0+28, xb8_bay[3]-1, floor_top-0.01])
             cube([xb8_ix-56, wall+2, cable_pass_h]);
-        // vent the +X divider over the XB8-adjacent front portion (Orbi broad face)
-        for (yy = [20:34:xb8_bay[3]-20])
-            translate([orbi_bay[2]-1, yy, floor_top+18]) cube([wall+2, 7, outer_h-30]);
-        // slot vents in back / left / right walls
-        wall_slots("back"); wall_slots("left"); wall_slots("right");
+        // diamond vents in the +X divider over the XB8-adjacent front portion
+        for (yy = [28 : 26 : xb8_bay[3]-16], zz = [floor_top+30 : 26 : top-24])
+            dia_X(orbi_bay[2] + wall/2, yy, zz, 14/sqrt(2), wall*3);
+        // diamond-lattice vents in back / left / right walls
+        wall_diamonds("back"); wall_diamonds("left"); wall_diamonds("right");
     }
 }
 
