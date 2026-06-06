@@ -17,9 +17,13 @@ Prints as **two parts** (both fit a 256 mm bed):
 
 **Installation:** screw the base to the floor through the 4 corner ears
 (countersunk #8 holes). Set the body on the base — its 4 corner ears drop over
-the base's **alignment posts**. Drive an M3 screw down through each body ear
-into the post (self-tapping pilot). To remove the body later, back out the 4 M3
-screws; the base stays put. ![base](images/caddy-base.png)
+the base's **conical alignment posts** (the cones self-center the body). Drive an
+M3 screw down through each body ear into the post (self-tapping pilot). To remove
+the body later, back out the 4 M3 screws; the base stays put.
+![base](images/caddy-base.png)
+
+The whole joint is **support-free**: the cones self-support (sloped walls),
+holes are vertical, and every countersink opens upward.
 
 ## The box
 
@@ -70,8 +74,9 @@ cable/port access and heat relief.
 - Hex-staggered perforated **floor** under every bay.
 - **12 mm raised feet** → an open air gap under the whole caddy so air enters
   from below and rises through the floor holes and open tops.
-- **Honeycomb-vented walls** across the side, back, and divider walls (hexagons
-  print clean and are the strongest/most print-friendly vent pattern).
+- **Honeycomb-vented walls** across the outer side/back walls AND both internal
+  divider walls, so air (and cables) move freely between all three bays
+  (hexagons print clean and are the strongest/most print-friendly vent pattern).
 - The **base ring** is slot-vented; air enters its sides, rises through the
   body's hex floor and out the open tops.
 - **Open tops**; towers stand exposed above the shell line.
@@ -122,6 +127,10 @@ depth, vent sizing, and the base/ear/screw dimensions). `part="body"|"base"|
 
 ## Versions
 
+- **v3.1** — fully support-free: the body↔base joint uses **conical self-centering
+  posts** (no blind sockets/overhangs); the cable window gets a center mullion so
+  its rim is a short bridge; and **both internal divider walls are honeycombed**
+  for cross-bay ventilation + cable passage.
 - **v3** — split into **body + floor-mount base** (base screws to floor; body
   aligns on posts and screws down separately) and switched wall vents to a
   **honeycomb** lattice (angular, strong, print-friendly).

@@ -163,10 +163,11 @@ module caddy() {
             // mount ears at the four corners (bottom)
             for (c = ears) translate([earcx(c), c[1], foot_height]) rbox(24, ear_w, ear_t, 4);
         }
-        // ear holes: post socket (bottom) + screw clearance + countersink (top)
+        // ear holes: CONICAL post socket (self-centering, prints with no support
+        // since the cone walls slope) + screw clearance + countersink (top)
         for (c = ears) {
             p = eph(c);
-            translate([p[0], p[1], foot_height-0.01]) cylinder(d=post_d+0.6, h=post_up+0.5);
+            translate([p[0], p[1], foot_height-0.01]) cylinder(d1=post_d+2.4, d2=post_d-2.6, h=post_up+0.5);
             translate([p[0], p[1], foot_height-0.01]) cylinder(d=m3_clear, h=ear_t+0.02);
             translate([p[0], p[1], foot_height+ear_t-2.6]) cylinder(d1=m3_clear, d2=csk_d, h=2.7);
         }
@@ -177,22 +178,25 @@ module caddy() {
         // lower the front (y=0) wall across the two router bays for access
         translate([16, -1, floor_top+front_lip])
             cube([W-32, wall+2, outer_h]);
-        // cable-entry window in the back wall behind the storage bay.
-        // Closed at the top: a `back_rim` band of wall stays, tying the two
-        // flanking wall sections together instead of leaving free-top flaps.
-        translate([cable_slot_cx - cable_slot_w/2, D-wall*1.5,
-                   top - cable_slot_h])
-            cube([cable_slot_w, wall*3, cable_slot_h - back_rim]);
-        // low cable pass-through: Orbi bay -> storage bay (through the +X divider)
-        translate([orbi_bay[2]-1, stor_bay[1]+8, floor_top-0.01])
-            cube([wall+2, storage_d-16, cable_pass_h]);
-        // low cable pass-through: XB8 bay -> storage bay (through the +Y divider)
-        translate([colB_x0+28, xb8_bay[3]-1, floor_top-0.01])
-            cube([xb8_ix-56, wall+2, cable_pass_h]);
-        // honeycomb vents in the +X divider over the XB8-adjacent front portion
-        translate([orbi_bay[2] + wall/2, xb8_bay[3]/2, (floor_top + 8 + top - 8)/2])
+        // cable-entry window in the back wall behind the storage bay. Closed at
+        // the top by a `back_rim` band, and split by a center mullion so the rim
+        // is supported by a short bridge (no wide unsupported span).
+        for (s = [-1, 1]) {
+            mw = cable_slot_w/2 - 3;
+            translate([cable_slot_cx + s*(cable_slot_w/4 + 1.5) - mw/2, D-wall*1.5,
+                       top - cable_slot_h])
+                cube([mw, wall*3, cable_slot_h - back_rim]);
+        }
+        // ventilate the internal divider walls with honeycomb (full area); the
+        // bottom cells also let cables pass between bays into the storage bay.
+        // +X divider (Orbi | XB8/storage), full depth:
+        translate([orbi_bay[2] + wall/2, D/2, (floor_top + 6 + top - 8)/2])
             rotate([0,90,0]) linear_extrude(wall*3, center=true)
-                honey2d(top - 8 - (floor_top + 8), xb8_bay[3] - 24, 13, 10);
+                honey2d(top - 8 - (floor_top + 6), D - 2*wall - 10, 13, 10);
+        // +Y divider (XB8 | storage):
+        translate([(colB_x0 + W - wall)/2, xb8_bay[3] + wall/2, (floor_top + 6 + top - 8)/2])
+            rotate([90,0,0]) linear_extrude(wall*3, center=true)
+                honey2d((W - wall) - colB_x0 - 10, top - 8 - (floor_top + 6), 13, 10);
         // honeycomb vents in back / left / right walls
         wall_honey("back"); wall_honey("left"); wall_honey("right");
     }
@@ -228,7 +232,7 @@ module make_base() {
             for (c = ears) {
                 translate([earcx(c), c[1], 0]) rbox(24, ear_w, base_h, 4);
                 p = eph(c);
-                translate([p[0], p[1], base_h-0.01]) cylinder(d=post_d, h=post_up);
+                translate([p[0], p[1], base_h-0.01]) cylinder(d1=post_d+2, d2=post_d-3, h=post_up);
             }
         }
         base_vents("back"); base_vents("front"); base_vents("left"); base_vents("right");
