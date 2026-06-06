@@ -107,14 +107,14 @@ module dia_X(xc, yc, zc, s, t)
 // (diamonds self-support at 45deg, so no bridging worries). On the back wall the
 // lattice skips the cable-window footprint so the window keeps a clean border.
 module wall_diamonds(side) {
-    d = 16; strut = 6; p = d + strut; t = wall*3; s = d/sqrt(2);
-    z0 = floor_top + 12; z1 = top - 12; vh = z1 - z0; zc = (z0 + z1) / 2;
+    d = 22; strut = 3; p = d + strut; t = wall*3; s = d/sqrt(2);
+    z0 = floor_top + 8; z1 = top - 8; vh = z1 - z0; zc = (z0 + z1) / 2;
     // back-wall cable-window keepout (expanded by half a diamond + 4mm)
     wx0 = cable_slot_cx - cable_slot_w/2 - d/2 - 4;
     wx1 = cable_slot_cx + cable_slot_w/2 + d/2 + 4;
     wz0 = (top - cable_slot_h) - d/2 - 4;
     wz1 = (top - back_rim)     + d/2 + 4;
-    uw = (side == "back") ? W - 40 : D - 40;
+    uw = (side == "back") ? W - 26 : D - 26;
     nu = floor(uw/(2*p)); nv = floor(vh/(2*p));
     for (i = [-nu:nu], j = [-nv:nv]) {
         u = i*p; v = j*p;
@@ -155,9 +155,9 @@ module caddy() {
         // low cable pass-through: XB8 bay -> storage bay (through the +Y divider)
         translate([colB_x0+28, xb8_bay[3]-1, floor_top-0.01])
             cube([xb8_ix-56, wall+2, cable_pass_h]);
-        // diamond vents in the +X divider over the XB8-adjacent front portion
-        for (yy = [28 : 26 : xb8_bay[3]-16], zz = [floor_top+30 : 26 : top-24])
-            dia_X(orbi_bay[2] + wall/2, yy, zz, 14/sqrt(2), wall*3);
+        // lattice vents in the +X divider over the XB8-adjacent front portion
+        for (yy = [26 : 25 : xb8_bay[3]-14], zz = [floor_top+28 : 25 : top-22])
+            dia_X(orbi_bay[2] + wall/2, yy, zz, 22/sqrt(2), wall*3);
         // diamond-lattice vents in back / left / right walls
         wall_diamonds("back"); wall_diamonds("left"); wall_diamonds("right");
     }

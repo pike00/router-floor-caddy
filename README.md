@@ -56,8 +56,8 @@ cable/port access and heat relief.
 - Hex-staggered perforated **floor** under every bay.
 - **12 mm raised feet** → an open air gap under the whole caddy so air enters
   from below and rises through the floor holes and open tops.
-- **Diamond-lattice vents** across the side, back, and divider walls (diamonds
-  self-support at 45° so they print without bridging).
+- **Diagonal lattice/trellis vents** across the side, back, and divider walls
+  (thin 45° ribs, self-supporting so they print without bridging).
 - **Open tops**; towers stand exposed above the shell line.
 
 ## Cable input + storage + router orientation
@@ -103,9 +103,10 @@ storage depth, vent + cable-notch sizing). Change one and re-run `just build`.
 
 ## Versions
 
-- **v2.6** — wall vents restyled from vertical slots to a **diamond lattice**
+- **v2.7** — wall vents tuned to a **diagonal lattice/trellis** (thin 45° ribs,
+  larger openings, fuller wall coverage). ![back](images/caddy-back.png)
+- **v2.6** — wall vents restyled from vertical slots to a diamond pattern
   (outer walls + dividers); floor stays hex, cable window keeps its clean border.
-  ![back](images/caddy-back.png)
 - **v2.5** — restored the back vent slots and shifted the cable window onto the
   slot grid so it keeps ~8 mm wall on each side (removed the thin sliver without
   deleting any slits). *(slots later replaced by diamonds in v2.6.)*
