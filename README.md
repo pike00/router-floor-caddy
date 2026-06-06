@@ -61,7 +61,7 @@ cable/port access and heat relief.
 
 ## Cable input + storage + router orientation
 
-The central rear bay is the **cabling hub**. It has a **U-notch in the back wall**
+The central rear bay is the **cabling hub**. It has a **cable window in the back wall** (closed at the top by a rim bar so the wall sections beside it are tied together, not free-topped flaps)
 for incoming coax/ethernet (the "cabinet input") and holds power bricks,
 splitters, and cable slack.
 
@@ -102,6 +102,9 @@ storage depth, vent + cable-notch sizing). Change one and re-run `just build`.
 
 ## Versions
 
+- **v2.2** — back cable cutout closed at the top with a rim bar (`back_rim`),
+  so the wall sections flanking it are tied top and bottom instead of being
+  free-topped flaps. ![back](images/caddy-back.png)
 - **v2.1** — cabling fix: both routers' port faces aimed into the central
   storage bay via low divider pass-throughs; extra vents in the divider beside
   the Orbi's broad face. Same footprint, still one print.

@@ -30,8 +30,9 @@ orbi_dev = [190, 72];           // leaf tower, ~280 tall (rotated 90deg here)
 
 // storage / cable bay (tucked behind the shorter XB8)
 storage_d = 70;                 // storage bay depth
-cable_slot_w = 60;              // back-wall cable-entry notch width
-cable_slot_h = 55;              // ... notch depth from the top
+cable_slot_w = 60;              // back-wall cable-entry window width
+cable_slot_h = 55;              // ... window height
+back_rim     = 12;              // solid wall left above the window (rim bar tying the flaps)
 cable_pass_h = 42;              // height of internal divider cable pass-throughs
 // Both routers' port faces point INTO the central storage bay:
 //   - Orbi port (broad) face -> +X divider, cable drops into the storage bay
@@ -120,10 +121,12 @@ module caddy() {
         // lower the front (y=0) wall across the two router bays for access
         translate([16, -1, floor_top+front_lip])
             cube([W-32, wall+2, outer_h]);
-        // cable-entry U-notch in the back wall behind the storage bay
+        // cable-entry window in the back wall behind the storage bay.
+        // Closed at the top: a `back_rim` band of wall stays, tying the two
+        // flanking wall sections together instead of leaving free-top flaps.
         translate([(stor_bay[0]+stor_bay[2])/2 - cable_slot_w/2, D-wall*1.5,
                    top - cable_slot_h])
-            cube([cable_slot_w, wall*3, cable_slot_h+1]);
+            cube([cable_slot_w, wall*3, cable_slot_h - back_rim]);
         // low cable pass-through: Orbi bay -> storage bay (through the +X divider)
         translate([orbi_bay[2]-1, stor_bay[1]+8, floor_top-0.01])
             cube([wall+2, storage_d-16, cable_pass_h]);
