@@ -1,3 +1,16 @@
+---
+title: "Router Floor Caddy — Xfinity XB8 + Netgear Orbi RBR850"
+description: "A well-ventilated, floor-standing caddy that holds two hot-running networking towers upright, with a bay for incoming-cable entry (\"cabinet input\") and storage (power bricks, cable…"
+date: 2026-06-05
+version: v3.2
+tags: [organization, electronics, storage]
+material: PETG / PLA
+print: { layer_height: 0.2mm, infill: 20%, supports: false }
+license: CC-BY-NC-4.0
+showcase: false
+source: private
+---
+
 # Router Floor Caddy — Xfinity XB8 + Netgear Orbi RBR850
 
 A well-ventilated, floor-standing caddy that holds two hot-running networking
